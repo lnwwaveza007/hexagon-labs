@@ -62,7 +62,7 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const handleSocialLogin = (provider: 'facebook' | 'instagram') => {
+  const handleSocialLogin = () => {
     setIsLoading(true);
     // Simulate social login
     setTimeout(() => {
@@ -105,7 +105,7 @@ const LoginPage: React.FC = () => {
                   <Button
                     variant="outline"
                     fullWidth
-                    onClick={() => handleSocialLogin('facebook')}
+                    onClick={() => handleSocialLogin()}
                     disabled={isLoading}
                     className="flex items-center justify-center gap-3 py-3 border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300"
                   >
@@ -116,7 +116,7 @@ const LoginPage: React.FC = () => {
                   <Button
                     variant="outline"
                     fullWidth
-                    onClick={() => handleSocialLogin('instagram')}
+                    onClick={() => handleSocialLogin()}
                     disabled={isLoading}
                     className="flex items-center justify-center gap-3 py-3 border-pink-200 text-pink-600 hover:bg-pink-50 hover:border-pink-300"
                   >

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, EyeOff, Facebook, Instagram, CheckCircle, Info, ArrowLeft, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, CheckCircle, ArrowLeft } from 'lucide-react';
 import Navigation from '../components/layout/Navigation';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
@@ -43,7 +43,6 @@ const RegisterPage: React.FC = () => {
   //   facebook: false,
   //   instagram: false
   // });
-  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
   const handleInputChange = (field: keyof FormData) => (
@@ -128,14 +127,14 @@ const RegisterPage: React.FC = () => {
     }
   };
 
-  const completeRegistration = () => {
-    setIsLoading(true);
-    // Simulate registration completion
-    setTimeout(() => {
-      setCurrentStep(3);
-      setIsLoading(false);
-    }, 2000);
-  };
+  // const completeRegistration = () => {
+  //   setIsLoading(true);
+  //   // Simulate registration completion
+  //   setTimeout(() => {
+  //     setCurrentStep(3);
+  //     setIsLoading(false);
+  //   }, 2000);
+  // };
 
   const handleInterestToggle = (interest: string) => {
     setFormData(prev => ({
