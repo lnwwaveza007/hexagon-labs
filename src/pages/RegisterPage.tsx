@@ -213,16 +213,6 @@ const RegisterPage: React.FC = () => {
   //   }, 2000);
   // };
 
-  const handleStep2Submit = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-    if (validateStep(2)) {
-      setCurrentStep(3);
-    }
-  };
-
   // const completeRegistration = () => {
   //   setIsLoading(true);
   //   // Simulate registration completion
