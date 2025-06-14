@@ -5,8 +5,6 @@ import Navigation from '../components/layout/Navigation';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Card from '../components/ui/Card';
-import Toast from '../components/ui/Toast';
-import type { ToastType } from '../components/ui/Toast';
 
 interface FormData {
   firstName: string;
@@ -73,7 +71,6 @@ const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
@@ -125,10 +122,6 @@ const RegisterPage: React.FC = () => {
         i === index ? { ...card, [field]: value } : card
       )
     }));
-  };
-
-  const showToast = (message: string, type: ToastType) => {
-    setToast({ message, type });
   };
 
   const validateStep = (step: number): boolean => {
@@ -189,10 +182,7 @@ const RegisterPage: React.FC = () => {
     setErrors(newErrors);
     
     if (!isValid) {
-      showToast(
-        'Please fill in all required fields correctly before proceeding.',
-        'error'
-      );
+      alert('Please fill in all required fields correctly before proceeding.');
     }
     
     return isValid;
@@ -528,7 +518,6 @@ const RegisterPage: React.FC = () => {
                 {formData.rateCards.map((card, index) => (
                   <Card 
                     key={index}
-                    id={`rate-card-${index}`}
                     className={`p-6 transition-all duration-300 ${
                       card.platform 
                         ? `bg-gradient-to-r ${PLATFORM_THEMES[card.platform as keyof typeof PLATFORM_THEMES]} bg-opacity-10 hover:bg-opacity-20` 
@@ -554,7 +543,6 @@ const RegisterPage: React.FC = () => {
                       {index > 0 && (
                         <Button
                           type="button"
-                          variant="danger"
                           onClick={() => {
                             setFormData(prev => ({
                               ...prev,
@@ -1214,15 +1202,7 @@ const RegisterPage: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Toast Notification */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
+      
     </div>
   );
 };
