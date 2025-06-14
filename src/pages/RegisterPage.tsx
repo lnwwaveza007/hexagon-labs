@@ -196,9 +196,7 @@ const RegisterPage: React.FC = () => {
         setCurrentStep(prev => prev + 1);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        // Handle final submission
-        showToast('Registration completed successfully!', 'success');
-        // Add your submission logic here
+        alert('Registration completed successfully!');
       }
     }
   };
