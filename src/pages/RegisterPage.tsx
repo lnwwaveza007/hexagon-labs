@@ -5,6 +5,8 @@ import Navigation from '../components/layout/Navigation';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Card from '../components/ui/Card';
+import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 
 interface FormData {
   firstName: string;
@@ -15,30 +17,31 @@ interface FormData {
   userType: string;
   interests: string[];
   customInterest: string;
-  rateCards: {
-    platform: string;
-    contentType: string;
-    basePrice: number;
-    duration: number;
-    note?: string;
-    scriptRevisions?: number;
-    draftRevisions?: number;
-    reshootPenalty?: string;
-    hashtagLimit?: number;
-    otherWorkConditions?: string;
-    quotationNeeded?: boolean;
-    depositRequired?: boolean;
-    depositPercentage?: number;
-    paymentAfterPost?: boolean;
-    paymentAfterPostPercentage?: number;
-    creditTerm?: number;
-    vatIncluded?: boolean;
-    whtIncluded?: boolean;
-    latePaymentPenalty?: string;
-    otherPaymentTerms?: string;
-    showAdvanced?: boolean;
-  }[];
-  customRateCard: string;
+  rateCards: RateCard[];
+}
+
+interface RateCard {
+  platform: string;
+  contentType: string;
+  basePrice: number;
+  duration: number;
+  note: string;
+  showAdvanced: boolean;
+  scriptRevisions?: number;
+  draftRevisions?: number;
+  reshootPenalty?: string;
+  hashtagLimit?: number;
+  otherWorkConditions?: string;
+  quotationNeeded?: boolean;
+  depositRequired?: boolean;
+  depositPercentage?: number;
+  paymentAfterPost?: boolean;
+  paymentAfterPostPercentage?: number;
+  creditTerm?: number;
+  vatIncluded?: boolean;
+  whtIncluded?: boolean;
+  latePaymentPenalty?: string;
+  otherPaymentTerms?: string;
 }
 
 interface FormErrors {
@@ -52,10 +55,9 @@ interface FormErrors {
   rateCards?: string[];
 }
 
-// interface SocialVerification {
-//   facebook: boolean;
-//   instagram: boolean;
-// }
+interface TranslationReturn {
+  t: TFunction;
+}
 
 // Update platform theme mapping with more vibrant colors
 const PLATFORM_THEMES = {
@@ -69,6 +71,7 @@ const PLATFORM_THEMES = {
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation() as TranslationReturn;
   const [currentStep, setCurrentStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -85,9 +88,9 @@ const RegisterPage: React.FC = () => {
       contentType: '',
       basePrice: 0,
       duration: 0,
-      note: ''
+      note: '',
+      showAdvanced: false
     }],
-    customRateCard: ''
   });
   // const [socialVerification, setSocialVerification] = useState<SocialVerification>({
   //   facebook: false,
@@ -131,49 +134,49 @@ const RegisterPage: React.FC = () => {
     switch (step) {
       case 1:
         if (!formData.firstName.trim()) {
-          newErrors.firstName = 'First name is required';
+          newErrors.firstName = `${t('RegisterPage.accountInfo.firstName')} ${t('RegisterPage.validation.required')}`;
           isValid = false;
         }
         if (!formData.lastName.trim()) {
-          newErrors.lastName = 'Last name is required';
+          newErrors.lastName = `${t('RegisterPage.accountInfo.lastName')} ${t('RegisterPage.validation.required')}`;
           isValid = false;
         }
         if (!formData.email.trim()) {
-          newErrors.email = 'Email is required';
+          newErrors.email = `${t('RegisterPage.accountInfo.email')} ${t('RegisterPage.validation.required')}`;
           isValid = false;
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-          newErrors.email = 'Please enter a valid email address';
+          newErrors.email = t('RegisterPage.validation.validEmail');
           isValid = false;
         }
         if (!formData.password) {
-          newErrors.password = 'Password is required';
+          newErrors.password = `${t('RegisterPage.accountInfo.password')} ${t('RegisterPage.validation.required')}`;
           isValid = false;
         } else if (formData.password.length < 8) {
-          newErrors.password = 'Password must be at least 8 characters long';
+          newErrors.password = t('RegisterPage.validation.passwordLength');
           isValid = false;
         }
         if (!formData.userType) {
-          newErrors.userType = 'Please select your role';
+          newErrors.userType = t('RegisterPage.validation.selectRole');
           isValid = false;
         }
         break;
       case 2:
         if (formData.interests.length === 0 && !formData.customInterest.trim()) {
-          newErrors.customInterest = 'Please select at least one interest or add a custom one';
+          newErrors.customInterest = t('RegisterPage.validation.selectInterest');
           isValid = false;
         }
         break;
       case 3:
         if (!formData.rateCards[0]?.contentType) {
-          newErrors.rateCards = ['Please select a content type'];
+          newErrors.rateCards = [t('RegisterPage.validation.selectContentType')];
           isValid = false;
         }
         if (!formData.rateCards[0]?.platform) {
-          newErrors.rateCards = ['Please select a platform'];
+          newErrors.rateCards = [t('RegisterPage.validation.selectPlatform')];
           isValid = false;
         }
         if (!formData.rateCards[0]?.basePrice || formData.rateCards[0]?.basePrice <= 0) {
-          newErrors.rateCards = ['Please enter a valid base price'];
+          newErrors.rateCards = [t('RegisterPage.validation.validBasePrice')];
           isValid = false;
         }
         break;
@@ -190,13 +193,12 @@ const RegisterPage: React.FC = () => {
 
   const handleStepSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (validateStep(currentStep)) {
       if (currentStep < 5) {
         setCurrentStep(prev => prev + 1);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        alert('Registration completed successfully!');
+        // Handle final submission
+        console.log('Form submitted:', formData);
       }
     }
   };
@@ -209,15 +211,6 @@ const RegisterPage: React.FC = () => {
   //       ...prev,
   //       [platform]: true
   //     }));
-  //     setIsLoading(false);
-  //   }, 2000);
-  // };
-
-  // const completeRegistration = () => {
-  //   setIsLoading(true);
-  //   // Simulate registration completion
-  //   setTimeout(() => {
-  //     setCurrentStep(3);
   //     setIsLoading(false);
   //   }, 2000);
   // };
@@ -266,11 +259,11 @@ const RegisterPage: React.FC = () => {
       case 1:
         return (
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-900">Create Your Account</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('RegisterPage.accountInfo.title')}</h2>
             <div className="grid grid-cols-1 gap-6">
               <div className="grid grid-cols-2 gap-4">
                 <Input
-                  label="First Name"
+                  label={t('RegisterPage.accountInfo.firstName')}
                   type="text"
                   value={formData.firstName}
                   onChange={handleInputChange('firstName')}
@@ -278,7 +271,7 @@ const RegisterPage: React.FC = () => {
                   required
                 />
                 <Input
-                  label="Last Name"
+                  label={t('RegisterPage.accountInfo.lastName')}
                   type="text"
                   value={formData.lastName}
                   onChange={handleInputChange('lastName')}
@@ -287,7 +280,7 @@ const RegisterPage: React.FC = () => {
                 />
               </div>
               <Input
-                label="Email"
+                label={t('RegisterPage.accountInfo.email')}
                 type="email"
                 value={formData.email}
                 onChange={handleInputChange('email')}
@@ -295,7 +288,7 @@ const RegisterPage: React.FC = () => {
                 required
               />
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('RegisterPage.accountInfo.role')}</label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="relative">
                     <input
@@ -311,12 +304,12 @@ const RegisterPage: React.FC = () => {
                       htmlFor="influencer"
                       className="flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-indigo-500 peer-checked:bg-indigo-50 hover:bg-gray-50"
                     >
-                      <span className="text-sm font-medium text-gray-900">Influencer</span>
-                      <span className="text-xs text-gray-500">Content Creator</span>
+                      <span className="text-sm font-medium text-gray-900">{t('RegisterPage.accountInfo.influencer')}</span>
+                      <span className="text-xs text-gray-500">{t('RegisterPage.accountInfo.influencerSubtitle')}</span>
                     </label>
                   </div>
                   <div className="relative bg-gray-100 cursor-not-allowed p-4 border-2 border-gray-200 rounded-lg">
-                    <span className="text-xs font-medium text-gray-500">Coming Soon . . .</span>
+                    <span className="text-xs font-medium text-gray-500">{t('RegisterPage.accountInfo.comingSoon')}</span>
                   </div>
                 </div>
                 {errors.userType && (
@@ -324,7 +317,7 @@ const RegisterPage: React.FC = () => {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('RegisterPage.accountInfo.password')}</label>
                 <div className="relative">
                   <Input
                     type={showPassword ? 'text' : 'password'}
@@ -344,7 +337,7 @@ const RegisterPage: React.FC = () => {
                 {formData.password && (
                   <div className="mt-2">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs text-gray-500">Password Strength</span>
+                      <span className="text-xs text-gray-500">{t('RegisterPage.accountInfo.passwordStrength')}</span>
                       <span className="text-xs font-medium text-gray-700">{passwordStrength.label}</span>
                     </div>
                     <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
@@ -357,7 +350,7 @@ const RegisterPage: React.FC = () => {
                 )}
               </div>
               <Input
-                label="Confirm Password"
+                label={t('RegisterPage.accountInfo.confirmPassword')}
                 type="password"
                 value={formData.confirmPassword}
                 onChange={handleInputChange('confirmPassword')}
@@ -372,18 +365,17 @@ const RegisterPage: React.FC = () => {
           <div className="space-y-6">
             <div className="text-center">
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Tell Us About Your Interests
+                {t('RegisterPage.interests.title')}
               </h3>
               <p className="text-gray-600">
-                Help brands find you by sharing what products you love to review.
+                {t('RegisterPage.interests.subtitle')}
               </p>
             </div>
 
-            {/* Interest Categories */}
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
-                  What products are you interested in reviewing? <span className="text-red-500">*</span>
+                  {t('RegisterPage.interests.label')} <span className="text-red-500">*</span>
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
@@ -404,10 +396,11 @@ const RegisterPage: React.FC = () => {
                       key={interest}
                       type="button"
                       onClick={() => handleInterestToggle(interest)}
-                      className={`p-3 text-left text-sm rounded-lg border-2 transition-all duration-200 hover:scale-105 ${formData.interests.includes(interest)
-                        ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                        : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                        }`}
+                      className={`p-3 text-left text-sm rounded-lg border-2 transition-all duration-200 hover:scale-105 ${
+                        formData.interests.includes(interest)
+                          ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
+                          : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                      }`}
                     >
                       {interest}
                     </button>
@@ -415,10 +408,9 @@ const RegisterPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Custom Interest */}
               <div className="flex gap-2">
                 <Input
-                  placeholder="Add your own interest..."
+                  placeholder={t('RegisterPage.interests.addCustom')}
                   value={formData.customInterest}
                   onChange={(e) => setFormData(prev => ({ ...prev, customInterest: e.target.value }))}
                   className="flex-1"
@@ -430,11 +422,10 @@ const RegisterPage: React.FC = () => {
                   disabled={!formData.customInterest.trim()}
                   className="px-4"
                 >
-                  Add
+                  {t('RegisterPage.interests.addButton')}
                 </Button>
               </div>
 
-              {/* Selected Interests Display */}
               {formData.interests.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {formData.interests.map((interest, index) => (
@@ -466,46 +457,45 @@ const RegisterPage: React.FC = () => {
           <div className="space-y-6">
             <div className="text-center">
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Set Your Rate Card
+                {t('RegisterPage.rateCard.title')}
               </h3>
               <p className="text-gray-600">
-                Define your pricing for different types of content. This helps brands understand your rates.
+                {t('RegisterPage.rateCard.subtitle')}
               </p>
             </div>
 
             <div className="space-y-6">
-              {/* Rate Card Template */}
               <div className="bg-gradient-to-r from-indigo-50 to-pink-50 rounded-lg p-6">
-                <h4 className="font-medium text-gray-900 mb-4">💡 Quick Guide</h4>
+                <h4 className="font-medium text-gray-900 mb-4">{t('RegisterPage.rateCard.quickGuide.title')}</h4>
                 <div className="space-y-3 text-sm text-gray-600">
-                  <p>• Add different rates for each content type you offer</p>
-                  <p>• Include any special requirements or conditions</p>
-                  <p>• You can add multiple rate cards for different platforms</p>
-                  <p>• You can always update your rates later</p>
+                  {(t('RegisterPage.rateCard.quickGuide.tips', { returnObjects: true }) as string[]).map((tip: string, index: number) => (
+                    <p key={index}>• {tip}</p>
+                  ))}
                 </div>
               </div>
 
-              {/* Rate Cards List */}
               <div className="space-y-6">
                 {formData.rateCards.map((card, index) => (
                   <Card
                     key={index}
-                    className={`p-6 transition-all duration-300 ${card.platform
-                      ? `bg-gradient-to-r ${PLATFORM_THEMES[card.platform as keyof typeof PLATFORM_THEMES]} bg-opacity-10 hover:bg-opacity-20`
-                      : 'bg-white'
-                      }`}
+                    className={`p-6 transition-all duration-300 ${
+                      card.platform
+                        ? `bg-gradient-to-r ${PLATFORM_THEMES[card.platform as keyof typeof PLATFORM_THEMES]} bg-opacity-10 hover:bg-opacity-20`
+                        : 'bg-white'
+                    }`}
                   >
                     <div className="flex justify-between items-start mb-6">
                       <div className="flex items-center gap-2">
                         <h4 className="text-lg font-medium">Rate Card #{index + 1}</h4>
                         {card.platform && (
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize shadow-sm ${card.platform === 'tiktok' ? 'bg-black text-white' :
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize shadow-sm ${
+                            card.platform === 'tiktok' ? 'bg-black text-white' :
                             card.platform === 'instagram' ? 'bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] text-white' :
-                              card.platform === 'facebook' ? 'bg-[#1877F2] text-white' :
-                                card.platform === 'youtube' ? 'bg-[#FF0000] text-white' :
-                                  card.platform === 'blog' ? 'bg-[#2D3748] text-white' :
-                                    'bg-indigo-600 text-white'
-                            }`}>
+                            card.platform === 'facebook' ? 'bg-[#1877F2] text-white' :
+                            card.platform === 'youtube' ? 'bg-[#FF0000] text-white' :
+                            card.platform === 'blog' ? 'bg-[#2D3748] text-white' :
+                            'bg-indigo-600 text-white'
+                          }`}>
                             {card.platform}
                           </span>
                         )}
@@ -530,7 +520,7 @@ const RegisterPage: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Platform <span className="text-red-500">*</span>
+                          {t('RegisterPage.rateCard.platform')} <span className="text-red-500">*</span>
                         </label>
                         <select
                           value={card.platform || ''}
@@ -545,15 +535,16 @@ const RegisterPage: React.FC = () => {
                               }, 500);
                             }
                           }}
-                          className={`block w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 bg-white/90 backdrop-blur-sm ${card.platform
-                            ? `border-${card.platform === 'tiktok' ? 'black' :
-                              card.platform === 'instagram' ? 'pink-500' :
+                          className={`block w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 bg-white/90 backdrop-blur-sm ${
+                            card.platform
+                              ? `border-${card.platform === 'tiktok' ? 'black' :
+                                card.platform === 'instagram' ? 'pink-500' :
                                 card.platform === 'facebook' ? 'blue-500' :
-                                  card.platform === 'youtube' ? 'red-500' :
-                                    card.platform === 'blog' ? 'gray-500' :
-                                      'indigo-500'}`
-                            : 'border-gray-300'
-                            }`}
+                                card.platform === 'youtube' ? 'red-500' :
+                                card.platform === 'blog' ? 'gray-500' :
+                                'indigo-500'}`
+                              : 'border-gray-300'
+                          }`}
                         >
                           <option value="">Select Platform</option>
                           <option value="tiktok">TikTok</option>
@@ -567,7 +558,7 @@ const RegisterPage: React.FC = () => {
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Content Type <span className="text-red-500">*</span>
+                          {t('RegisterPage.rateCard.contentType')} <span className="text-red-500">*</span>
                         </label>
                         <select
                           value={card.contentType || ''}
@@ -587,7 +578,7 @@ const RegisterPage: React.FC = () => {
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Base Price (THB) <span className="text-red-500">*</span>
+                          {t('RegisterPage.rateCard.basePrice')} <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
                           <Input
@@ -603,7 +594,7 @@ const RegisterPage: React.FC = () => {
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Duration (minutes)
+                          {t('RegisterPage.rateCard.duration')}
                         </label>
                         <div className="relative">
                           <Input
@@ -619,7 +610,7 @@ const RegisterPage: React.FC = () => {
 
                       <div className="md:col-span-2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Additional Notes
+                          {t('RegisterPage.rateCard.additionalNotes')}
                         </label>
                         <textarea
                           className="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 bg-white/90 backdrop-blur-sm"
@@ -631,7 +622,6 @@ const RegisterPage: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Advanced Settings Toggle */}
                     <div className="mt-6 border-t pt-6">
                       <button
                         type="button"
@@ -649,41 +639,40 @@ const RegisterPage: React.FC = () => {
                         className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 transition-colors duration-300"
                       >
                         <ChevronDown className={`w-4 h-4 transform transition-transform duration-300 ${card.showAdvanced ? 'rotate-180' : ''}`} />
-                        Advanced Settings
+                        {t('RegisterPage.rateCard.advancedSettings')}
                       </button>
 
                       {card.showAdvanced && (
                         <div className="mt-6 space-y-6 bg-white/50 backdrop-blur-sm rounded-lg p-6 shadow-sm">
-                          {/* Work & Revision Conditions */}
                           <div>
-                            <h5 className="text-sm font-medium text-gray-900 mb-4">Work & Revision Conditions</h5>
+                            <h5 className="text-sm font-medium text-gray-900 mb-4">{t('RegisterPage.rateCard.workConditions.title')}</h5>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <Input
-                                label="Script Revisions Allowed"
+                                label={t('RegisterPage.rateCard.workConditions.scriptRevisions')}
                                 type="number"
                                 value={card.scriptRevisions || ''}
                                 onChange={(e) => updateRateCard(index, 'scriptRevisions', parseInt(e.target.value))}
                               />
                               <Input
-                                label="Draft Revisions Allowed"
+                                label={t('RegisterPage.rateCard.workConditions.draftRevisions')}
                                 type="number"
                                 value={card.draftRevisions || ''}
                                 onChange={(e) => updateRateCard(index, 'draftRevisions', parseInt(e.target.value))}
                               />
                               <Input
-                                label="Reshoot Penalty"
+                                label={t('RegisterPage.rateCard.workConditions.reshootPenalty')}
                                 type="text"
                                 value={card.reshootPenalty || ''}
                                 onChange={(e) => updateRateCard(index, 'reshootPenalty', e.target.value)}
                               />
                               <Input
-                                label="Hashtag Limit"
+                                label={t('RegisterPage.rateCard.workConditions.hashtagLimit')}
                                 type="number"
                                 value={card.hashtagLimit || ''}
                                 onChange={(e) => updateRateCard(index, 'hashtagLimit', parseInt(e.target.value))}
                               />
                               <div className="md:col-span-2">
-                                <label className="block text-sm font-medium text-gray-700">Other Work Conditions</label>
+                                <label className="block text-sm font-medium text-gray-700">{t('RegisterPage.rateCard.workConditions.otherWorkConditions')}</label>
                                 <textarea
                                   className="p-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                   rows={2}
@@ -694,9 +683,8 @@ const RegisterPage: React.FC = () => {
                             </div>
                           </div>
 
-                          {/* Payment Terms */}
                           <div className='border-t pt-6 mt-6 border-gray-200'>
-                            <h5 className="text-sm font-medium text-gray-900 mb-4">Payment Terms</h5>
+                            <h5 className="text-sm font-medium text-gray-900 mb-4">{t('RegisterPage.rateCard.paymentTerms.title')}</h5>
                             <div className="flex flex-col gap-4">
                               <div className="flex items-center">
                                 <input
@@ -705,7 +693,7 @@ const RegisterPage: React.FC = () => {
                                   checked={card.quotationNeeded || false}
                                   onChange={(e) => updateRateCard(index, 'quotationNeeded', e.target.checked)}
                                 />
-                                <label className="ml-2 block text-sm text-gray-900">Quotation/PO Needed</label>
+                                <label className="ml-2 block text-sm text-gray-900">{t('RegisterPage.rateCard.paymentTerms.quotationNeeded')}</label>
                               </div>
                               <div className="flex items-center">
                                 <input
@@ -714,11 +702,11 @@ const RegisterPage: React.FC = () => {
                                   checked={card.depositRequired || false}
                                   onChange={(e) => updateRateCard(index, 'depositRequired', e.target.checked)}
                                 />
-                                <label className="ml-2 block text-sm text-gray-900">Deposit Required</label>
+                                <label className="ml-2 block text-sm text-gray-900">{t('RegisterPage.rateCard.paymentTerms.depositRequired')}</label>
                               </div>
                               {card.depositRequired && (
                                 <Input
-                                  label="Deposit Percentage"
+                                  label={t('RegisterPage.rateCard.paymentTerms.depositPercentage')}
                                   type="number"
                                   value={card.depositPercentage || ''}
                                   onChange={(e) => updateRateCard(index, 'depositPercentage', parseInt(e.target.value))}
@@ -731,18 +719,18 @@ const RegisterPage: React.FC = () => {
                                   checked={card.paymentAfterPost || false}
                                   onChange={(e) => updateRateCard(index, 'paymentAfterPost', e.target.checked)}
                                 />
-                                <label className="ml-2 block text-sm text-gray-900">Payment After Post</label>
+                                <label className="ml-2 block text-sm text-gray-900">{t('RegisterPage.rateCard.paymentTerms.paymentAfterPost')}</label>
                               </div>
                               {card.paymentAfterPost && (
                                 <Input
-                                  label="Payment After Post Percentage"
+                                  label={t('RegisterPage.rateCard.paymentTerms.paymentAfterPostPercentage')}
                                   type="number"
                                   value={card.paymentAfterPostPercentage || ''}
                                   onChange={(e) => updateRateCard(index, 'paymentAfterPostPercentage', parseInt(e.target.value))}
                                 />
                               )}
                               <Input
-                                label="Credit Term (days)"
+                                label={t('RegisterPage.rateCard.paymentTerms.creditTerm')}
                                 type="number"
                                 value={card.creditTerm || ''}
                                 onChange={(e) => updateRateCard(index, 'creditTerm', parseInt(e.target.value))}
@@ -754,7 +742,7 @@ const RegisterPage: React.FC = () => {
                                   checked={card.vatIncluded || false}
                                   onChange={(e) => updateRateCard(index, 'vatIncluded', e.target.checked)}
                                 />
-                                <label className="ml-2 block text-sm text-gray-900">VAT Included</label>
+                                <label className="ml-2 block text-sm text-gray-900">{t('RegisterPage.rateCard.paymentTerms.vatIncluded')}</label>
                               </div>
                               <div className="flex items-center">
                                 <input
@@ -763,16 +751,16 @@ const RegisterPage: React.FC = () => {
                                   checked={card.whtIncluded || false}
                                   onChange={(e) => updateRateCard(index, 'whtIncluded', e.target.checked)}
                                 />
-                                <label className="ml-2 block text-sm text-gray-900">WHT Included</label>
+                                <label className="ml-2 block text-sm text-gray-900">{t('RegisterPage.rateCard.paymentTerms.whtIncluded')}</label>
                               </div>
                               <Input
-                                label="Late Payment Penalty"
+                                label={t('RegisterPage.rateCard.paymentTerms.latePaymentPenalty')}
                                 type="text"
                                 value={card.latePaymentPenalty || ''}
                                 onChange={(e) => updateRateCard(index, 'latePaymentPenalty', e.target.value)}
                               />
                               <div className="md:col-span-2">
-                                <label className="block text-sm font-medium text-gray-700">Other Payment Terms</label>
+                                <label className="block text-sm font-medium text-gray-700">{t('RegisterPage.rateCard.paymentTerms.otherPaymentTerms')}</label>
                                 <textarea
                                   className="p-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                   rows={2}
@@ -810,59 +798,53 @@ const RegisterPage: React.FC = () => {
                   className="w-full flex items-center justify-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
-                  Add Another Rate Card
+                  {t('RegisterPage.rateCard.addAnother')}
                 </Button>
               </div>
 
-              {/* Tips Section */}
               <div className="bg-gradient-to-r from-indigo-50 to-pink-50 rounded-lg p-6">
-                <h4 className="font-medium text-gray-900 mb-4">💡 Pricing Tips</h4>
+                <h4 className="font-medium text-gray-900 mb-4">{t('RegisterPage.rateCard.pricingTips.title')}</h4>
                 <div className="space-y-3 text-sm text-gray-600">
-                  <p>• Consider your follower count and engagement rate</p>
-                  <p>• Factor in production time and costs</p>
-                  <p>• Research market rates for similar content</p>
-                  <p>• Include any special skills or equipment needed</p>
-                  <p>• Mention if you provide additional services (e.g., script writing, editing)</p>
+                  {(t('RegisterPage.rateCard.pricingTips.tips', { returnObjects: true }) as string[]).map((tip: string, index: number) => (
+                    <p key={index}>• {tip}</p>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         );
-      // Review Information
       case 4:
         return (
           <div className="space-y-8">
             <div className="text-center">
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Review Your Information
+                {t('RegisterPage.review.title')}
               </h3>
               <p className="text-gray-600">
-                Please review all your information before submitting. You can go back to make changes if needed.
+                {t('RegisterPage.review.subtitle')}
               </p>
             </div>
 
-            {/* Account Information */}
             <Card className="p-6">
-              <h4 className="text-lg font-medium text-gray-900 mb-4">Account Information</h4>
+              <h4 className="text-lg font-medium text-gray-900 mb-4">{t('RegisterPage.review.accountInfo.title')}</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-500">Full Name</p>
+                  <p className="text-sm text-gray-500">{t('RegisterPage.review.accountInfo.fullName')}</p>
                   <p className="font-medium">{formData.firstName} {formData.lastName}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Email</p>
+                  <p className="text-sm text-gray-500">{t('RegisterPage.review.accountInfo.email')}</p>
                   <p className="font-medium">{formData.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">User Type</p>
+                  <p className="text-sm text-gray-500">{t('RegisterPage.review.accountInfo.userType')}</p>
                   <p className="font-medium capitalize">{formData.userType}</p>
                 </div>
               </div>
             </Card>
 
-            {/* Interests */}
             <Card className="p-6">
-              <h4 className="text-lg font-medium text-gray-900 mb-4">Selected Interests</h4>
+              <h4 className="text-lg font-medium text-gray-900 mb-4">{t('RegisterPage.review.interests.title')}</h4>
               <div className="flex flex-wrap gap-2">
                 {formData.interests.map((interest, index) => (
                   <span
@@ -880,68 +862,66 @@ const RegisterPage: React.FC = () => {
               </div>
             </Card>
 
-            {/* Rate Cards */}
             <Card className="p-6">
-              <h4 className="text-lg font-medium text-gray-900 mb-4">Rate Cards</h4>
+              <h4 className="text-lg font-medium text-gray-900 mb-4">{t('RegisterPage.review.rateCards.title')}</h4>
               <div className="space-y-6">
                 {formData.rateCards.map((card, index) => (
-                  <div key={index} className="border-b pb-6 last:border-b-0  bg-gray-100 p-4 rounded-lg shadow-sm">
+                  <div key={index} className="border-b pb-6 last:border-b-0 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h5 className="font-medium text-gray-900 mb-4">Rate Card #{index + 1}</h5>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm text-gray-500">Platform</p>
+                        <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.platform')}</p>
                         <p className="font-medium capitalize">{card.platform}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Content Type</p>
+                        <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.contentType')}</p>
                         <p className="font-medium capitalize">{card.contentType}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Base Price</p>
+                        <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.basePrice')}</p>
                         <p className="font-medium">{card.basePrice} THB</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Duration</p>
+                        <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.duration')}</p>
                         <p className="font-medium">{card.duration} minutes</p>
                       </div>
                       {card.note && (
                         <div className="md:col-span-2">
-                          <p className="text-sm text-gray-500">Additional Notes</p>
+                          <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.additionalNotes')}</p>
                           <p className="font-medium">{card.note}</p>
                         </div>
                       )}
-                      {/* Advanced Settings Summary */}
                       {(card.scriptRevisions || card.draftRevisions || card.reshootPenalty || card.hashtagLimit || card.otherWorkConditions) && (
                         <div className="md:col-span-2 mt-4 border-t pt-6 mt-6 border-gray-300">
-                          <h6 className="text-sm font-medium text-gray-900 mb-2">Work & Revision Conditions</h6>
+                          <h6 className="text-sm font-medium text-gray-900 mb-2">{t('RegisterPage.review.rateCards.workConditions.title')}</h6>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {card.scriptRevisions && (
                               <div>
-                                <p className="text-sm text-gray-500">Script Revisions</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.workConditions.scriptRevisions')}</p>
                                 <p className="font-medium">{card.scriptRevisions}</p>
                               </div>
                             )}
                             {card.draftRevisions && (
                               <div>
-                                <p className="text-sm text-gray-500">Draft Revisions</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.workConditions.draftRevisions')}</p>
                                 <p className="font-medium">{card.draftRevisions}</p>
                               </div>
                             )}
                             {card.reshootPenalty && (
                               <div>
-                                <p className="text-sm text-gray-500">Reshoot Penalty</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.workConditions.reshootPenalty')}</p>
                                 <p className="font-medium">{card.reshootPenalty}</p>
                               </div>
                             )}
                             {card.hashtagLimit && (
                               <div>
-                                <p className="text-sm text-gray-500">Hashtag Limit</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.workConditions.hashtagLimit')}</p>
                                 <p className="font-medium">{card.hashtagLimit}</p>
                               </div>
                             )}
                             {card.otherWorkConditions && (
                               <div className="md:col-span-2">
-                                <p className="text-sm text-gray-500">Other Work Conditions</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.workConditions.otherWorkConditions')}</p>
                                 <p className="font-medium">{card.otherWorkConditions}</p>
                               </div>
                             )}
@@ -951,53 +931,53 @@ const RegisterPage: React.FC = () => {
 
                       {(card.quotationNeeded || card.depositRequired || card.paymentAfterPost || card.creditTerm || card.vatIncluded || card.whtIncluded || card.latePaymentPenalty || card.otherPaymentTerms) && (
                         <div className="md:col-span-2 mt-4 border-t pt-6 mt-6 border-gray-300">
-                          <h6 className="text-sm font-medium text-gray-900 mb-2">Payment Terms</h6>
+                          <h6 className="text-sm font-medium text-gray-900 mb-2">{t('RegisterPage.review.rateCards.paymentTerms.title')}</h6>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {card.quotationNeeded && (
                               <div>
-                                <p className="text-sm text-gray-500">Quotation/PO Needed</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.paymentTerms.quotationNeeded')}</p>
                                 <p className="font-medium">Yes</p>
                               </div>
                             )}
                             {card.depositRequired && (
                               <div>
-                                <p className="text-sm text-gray-500">Deposit Required</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.paymentTerms.depositRequired')}</p>
                                 <p className="font-medium">{card.depositPercentage}%</p>
                               </div>
                             )}
                             {card.paymentAfterPost && (
                               <div>
-                                <p className="text-sm text-gray-500">Payment After Post</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.paymentTerms.paymentAfterPost')}</p>
                                 <p className="font-medium">{card.paymentAfterPostPercentage}%</p>
                               </div>
                             )}
                             {card.creditTerm && (
                               <div>
-                                <p className="text-sm text-gray-500">Credit Term</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.paymentTerms.creditTerm')}</p>
                                 <p className="font-medium">{card.creditTerm} days</p>
                               </div>
                             )}
                             {card.vatIncluded && (
                               <div>
-                                <p className="text-sm text-gray-500">VAT Included</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.paymentTerms.vatIncluded')}</p>
                                 <p className="font-medium">Yes</p>
                               </div>
                             )}
                             {card.whtIncluded && (
                               <div>
-                                <p className="text-sm text-gray-500">WHT Included</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.paymentTerms.whtIncluded')}</p>
                                 <p className="font-medium">Yes</p>
                               </div>
                             )}
                             {card.latePaymentPenalty && (
                               <div>
-                                <p className="text-sm text-gray-500">Late Payment Penalty</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.paymentTerms.latePaymentPenalty')}</p>
                                 <p className="font-medium">{card.latePaymentPenalty}</p>
                               </div>
                             )}
                             {card.otherPaymentTerms && (
                               <div className="md:col-span-2">
-                                <p className="text-sm text-gray-500">Other Payment Terms</p>
+                                <p className="text-sm text-gray-500">{t('RegisterPage.review.rateCards.paymentTerms.otherPaymentTerms')}</p>
                                 <p className="font-medium">{card.otherPaymentTerms}</p>
                               </div>
                             )}
@@ -1017,16 +997,16 @@ const RegisterPage: React.FC = () => {
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
               <CheckCircle className="w-8 h-8 text-green-500" />
             </div>
-            <h2 className="text-2xl font-semibold text-gray-900">Registration Complete!</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('RegisterPage.complete.title')}</h2>
             <p className="text-gray-600">
-              Thank you for registering. We will review your information and get back to you soon.
+              {t('RegisterPage.complete.subtitle')}
             </p>
             <Button
               type="button"
               onClick={() => navigate('/login')}
               className="mt-4"
             >
-              Go to Login
+              {t('RegisterPage.complete.goToLogin')}
             </Button>
           </div>
         );
@@ -1037,7 +1017,6 @@ const RegisterPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-pink-50 relative overflow-hidden">
-      {/* Background decoration */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-40 h-40 bg-gradient-to-r from-indigo-400/10 to-purple-400/10 rounded-full blur-3xl animate-float"></div>
         <div className="absolute bottom-20 right-10 w-32 h-32 bg-gradient-to-r from-pink-400/10 to-rose-400/10 rounded-full blur-3xl animate-float delay-700"></div>
@@ -1049,11 +1028,8 @@ const RegisterPage: React.FC = () => {
       <div className="pt-20 pb-12 relative z-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-8">
           <div className="flex items-center justify-center min-h-[calc(100vh-8rem)]">
-
-            {/* Registration Form - Centered */}
             <div className="w-full max-w-2xl mx-auto">
               <Card className="p-10 shadow-2xl border-0 backdrop-blur-sm bg-white/95 hover:shadow-3xl transition-all duration-300">
-                {/* Header */}
                 <div className="text-center mb-10">
                   <div className="mb-4">
                     <img
@@ -1064,17 +1040,15 @@ const RegisterPage: React.FC = () => {
                   </div>
                   <h1 className="text-4xl font-bold mb-3">
                     <span className="bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">
-                      Join HEXAGON LABS
+                      {t('RegisterPage.title')}
                     </span>
                   </h1>
                   <p className="text-gray-600 text-lg">
-                    Create your influencer account and start matching with campaigns
+                    {t('RegisterPage.subtitle')}
                   </p>
                 </div>
 
-                {/* Enhanced Step Indicator */}
                 <div className="relative mb-16">
-                  {/* Background line */}
                   <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-200 -z-10"></div>
 
                   <div className="flex items-center justify-between relative">
@@ -1100,7 +1074,6 @@ const RegisterPage: React.FC = () => {
                           )}
                         </div>
 
-                        {/* Step label */}
                         <div className={`
                           absolute -bottom-8 text-sm font-medium transition-all duration-300
                           ${step === currentStep
@@ -1108,24 +1081,22 @@ const RegisterPage: React.FC = () => {
                             : 'text-gray-400 opacity-0 transform translate-y-2'
                           }
                         `}>
-                          {step === 1 && 'Account'}
-                          {step === 2 && 'Interests'}
-                          {step === 3 && 'Rate Card'}
-                          {step === 4 && 'Review'}
-                          {step === 5 && 'Complete'}
+                          {step === 1 && t('RegisterPage.steps.account')}
+                          {step === 2 && t('RegisterPage.steps.interests')}
+                          {step === 3 && t('RegisterPage.steps.rateCard')}
+                          {step === 4 && t('RegisterPage.steps.review')}
+                          {step === 5 && t('RegisterPage.steps.complete')}
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  {/* Progress line */}
                   <div
                     className="absolute top-5 left-0 h-0.5 bg-indigo-600 transition-all duration-500 ease-in-out"
                     style={{ width: `${((currentStep - 1) / 4) * 100}%` }}
                   ></div>
                 </div>
 
-                {/* Form */}
                 <form onSubmit={handleStepSubmit}>
                   {renderStep()}
 
@@ -1139,7 +1110,7 @@ const RegisterPage: React.FC = () => {
                           className="flex items-center gap-2"
                         >
                           <ArrowLeft className="w-4 h-4" />
-                          Back
+                          {t('RegisterPage.navigation.back')}
                         </Button>
                       )}
                       <Button
@@ -1149,18 +1120,17 @@ const RegisterPage: React.FC = () => {
                           : ''
                           }`}
                       >
-                        {currentStep === 4 ? 'Review Information' : 'Next Step →'}
+                        {currentStep === 4 ? t('RegisterPage.navigation.review') : t('RegisterPage.navigation.next')}
                       </Button>
                     </div>
                   )}
                 </form>
 
-                {/* Footer */}
                 <div className="text-center mt-8 pt-6 border-t border-gray-200">
                   <p className="text-sm text-gray-600">
-                    Already have an account?{' '}
+                    {t('RegisterPage.navigation.alreadyHaveAccount')}{' '}
                     <Link to="/auth" className="text-indigo-600 hover:text-indigo-500 font-medium">
-                      Sign in here
+                      {t('RegisterPage.navigation.signIn')}
                     </Link>
                   </p>
                 </div>
@@ -1169,7 +1139,6 @@ const RegisterPage: React.FC = () => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };

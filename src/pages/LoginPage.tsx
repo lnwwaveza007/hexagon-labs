@@ -5,6 +5,7 @@ import Navigation from '../components/layout/Navigation';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Card from '../components/ui/Card';
+import { useTranslation } from 'react-i18next';
 
 const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +16,7 @@ const LoginPage: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{email?: string; password?: string}>({});
+  const { t } = useTranslation();
 
   const handleInputChange = (field: 'email' | 'password') => (
     e: React.ChangeEvent<HTMLInputElement>
@@ -93,10 +95,10 @@ const LoginPage: React.FC = () => {
                     />
                   </div>
                   <h1 className="text-3xl font-bold text-gray-900 mb-2 animate-fade-in-up delay-100">
-                    Welcome Back
+                    {t('LoginPage.title')}
                   </h1>
                   <p className="text-gray-600 animate-fade-in-up delay-200">
-                    Sign in to your <strong>HEXAGON</strong> LABS account
+                    {t('LoginPage.subtitle')} <strong>{t('LoginPage.brandName')}</strong> {t('LoginPage.account')}
                   </p>
                 </div>
 
@@ -110,7 +112,7 @@ const LoginPage: React.FC = () => {
                     className="flex items-center justify-center gap-3 py-3 border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300"
                   >
                     <Facebook className="w-5 h-5" />
-                    <span>Continue with Facebook</span>
+                    <span>{t('LoginPage.continueWithFacebook')}</span>
                   </Button>
                   
                   <Button
@@ -121,7 +123,7 @@ const LoginPage: React.FC = () => {
                     className="flex items-center justify-center gap-3 py-3 border-pink-200 text-pink-600 hover:bg-pink-50 hover:border-pink-300"
                   >
                     <Instagram className="w-5 h-5" />
-                    <span>Continue with Instagram</span>
+                    <span>{t('LoginPage.continueWithInstagram')}</span>
                   </Button>
                 </div>
 
@@ -131,29 +133,29 @@ const LoginPage: React.FC = () => {
                     <div className="w-full border-t border-gray-300"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-white text-gray-500 font-medium">or</span>
+                    <span className="px-4 bg-white text-gray-500 font-medium">{t('LoginPage.or')}</span>
                   </div>
                 </div>
 
                 {/* Email Login Form */}
                 <form onSubmit={handleLogin} className="space-y-6 animate-fade-in-up delay-500">
                   <Input
-                    label="Email Address"
+                    label={t('LoginPage.emailLabel')}
                     type="email"
                     value={formData.email}
                     onChange={handleInputChange('email')}
                     error={errors.email}
-                    placeholder="Enter your email"
+                    placeholder={t('LoginPage.emailPlaceholder')}
                     required
                   />
                   
                   <Input
-                    label="Password"
+                    label={t('LoginPage.passwordLabel')}
                     type={showPassword ? 'text' : 'password'}
                     value={formData.password}
                     onChange={handleInputChange('password')}
                     error={errors.password}
-                    placeholder="Enter your password"
+                    placeholder={t('LoginPage.passwordPlaceholder')}
                     rightIcon={
                       <button
                         type="button"
@@ -174,10 +176,10 @@ const LoginPage: React.FC = () => {
                         onChange={handleRememberChange}
                         className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2"
                       />
-                      <span className="text-sm text-gray-600">Remember me</span>
+                      <span className="text-sm text-gray-600">{t('LoginPage.rememberMe')}</span>
                     </label>
                     <Link to="#" className="text-sm text-indigo-600 hover:text-indigo-500 font-medium">
-                      Forgot password?
+                      {t('LoginPage.forgotPassword')}
                     </Link>
                   </div>
 
@@ -190,10 +192,10 @@ const LoginPage: React.FC = () => {
                     {isLoading ? (
                       <>
                         <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                        Signing In...
+                        {t('LoginPage.signingIn')}
                       </>
                     ) : (
-                      '🚀 Sign In'
+                      `🚀 ${t('LoginPage.signIn')}`
                     )}
                   </Button>
                 </form>
@@ -201,9 +203,9 @@ const LoginPage: React.FC = () => {
                 {/* Footer */}
                 <div className="text-center mt-8 pt-6 border-t border-gray-200 animate-fade-in-up delay-600">
                   <p className="text-sm text-gray-600">
-                    Don't have an account?{' '}
+                    {t('LoginPage.noAccount')}{' '}
                     <Link to="/register" className="text-indigo-600 hover:text-indigo-500 font-medium">
-                      Sign up here
+                      {t('LoginPage.signUpHere')}
                     </Link>
                   </p>
                 </div>
@@ -221,20 +223,20 @@ const LoginPage: React.FC = () => {
                 
                 <div className="relative z-10">
                   <h2 className="text-3xl font-bold mb-4">
-                    Join the Influencer Revolution
+                    {t('LoginPage.sideContent.title')}
                   </h2>
                   <p className="text-indigo-100 mb-8 leading-relaxed">
-                    Connect with top brands and grow your influence with campaigns that match your style and audience.
+                    {t('LoginPage.sideContent.description')}
                   </p>
                   
                   <div className="grid grid-cols-2 gap-6">
                     <div className="text-center p-4 bg-white/10 rounded-xl backdrop-blur-sm">
                       <div className="text-2xl font-bold text-white">10K+</div>
-                      <div className="text-sm text-indigo-100">Verified Influencers</div>
+                      <div className="text-sm text-indigo-100">{t('LoginPage.sideContent.stats.influencers')}</div>
                     </div>
                     <div className="text-center p-4 bg-white/10 rounded-xl backdrop-blur-sm">
                       <div className="text-2xl font-bold text-white">$2M+</div>
-                      <div className="text-sm text-indigo-100">Paid to Creators</div>
+                      <div className="text-sm text-indigo-100">{t('LoginPage.sideContent.stats.paidToCreators')}</div>
                     </div>
                   </div>
                   
@@ -243,19 +245,19 @@ const LoginPage: React.FC = () => {
                       <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
                         <span className="text-xs">✓</span>
                       </div>
-                      <span className="text-indigo-100">Verified brand partnerships</span>
+                      <span className="text-indigo-100">{t('LoginPage.sideContent.features.verifiedPartnerships')}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
                         <span className="text-xs">✓</span>
                       </div>
-                      <span className="text-indigo-100">Secure payment protection</span>
+                      <span className="text-indigo-100">{t('LoginPage.sideContent.features.securePayments')}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
                         <span className="text-xs">✓</span>
                       </div>
-                      <span className="text-indigo-100">Real-time campaign analytics</span>
+                      <span className="text-indigo-100">{t('LoginPage.sideContent.features.realTimeAnalytics')}</span>
                     </div>
                   </div>
                 </div>
@@ -271,7 +273,7 @@ const LoginPage: React.FC = () => {
           <div className="bg-white rounded-xl p-8 shadow-2xl animate-slide-in-scale">
             <div className="text-center">
               <Loader2 className="w-12 h-12 animate-spin text-indigo-600 mx-auto mb-4" />
-              <p className="text-gray-600 font-medium">Authenticating...</p>
+              <p className="text-gray-600 font-medium">{t('LoginPage.loading')}</p>
             </div>
           </div>
         </div>
