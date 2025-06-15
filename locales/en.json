@@ -1,0 +1,60 @@
+{
+    "LandingPage": {
+        "title": "Welcome to the Landing Page",
+        "description": "Join thousands of influencers and brands creating authentic partnerships. Match with campaigns that align with your audience and values.",
+        "hero": {
+            "title": "Connect Influencers with",
+            "titleHighlight": "Perfect Campaigns",
+            "getStarted": "Get Started as Influencer",
+            "learnMore": "Learn More",
+            "stats": {
+                "influencers": "Active Influencers",
+                "brands": "Brand Partners",
+                "successRate": "Success Rate"
+            }
+        },
+        "features": {
+            "title": "Why Choose",
+            "titleHighlight": "Hexagon Lab?",
+            "verifiedProfiles": {
+                "title": "Verified Profiles",
+                "description": "All influencers are verified through Facebook and Instagram authentication to ensure authenticity."
+            },
+            "smartMatching": {
+                "title": "Smart Matching",
+                "description": "AI-powered algorithm matches influencers with campaigns based on audience demographics and engagement."
+            },
+            "analytics": {
+                "title": "Real-time Analytics",
+                "description": "Track campaign performance with detailed analytics and reporting tools for better ROI insights."
+            },
+            "payments": {
+                "title": "Secure Payments",
+                "description": "Protected payment system ensures timely and secure transactions for all campaign collaborations."
+            }
+        },
+        "howItWorks": {
+            "title": "How It",
+            "titleHighlight": "Works",
+            "steps": {
+                "createProfile": {
+                    "title": "Create Your Profile",
+                    "description": "Sign up and verify your social media accounts through Facebook or Instagram authentication."
+                },
+                "getMatched": {
+                    "title": "Get Matched",
+                    "description": "Our AI algorithm finds campaigns that perfectly match your audience and content style."
+                },
+                "collaborate": {
+                    "title": "Collaborate & Earn",
+                    "description": "Work with brands, create amazing content, and get paid securely through our platform."
+                }
+            }
+        },
+        "cta": {
+            "title": "Ready to Start Your Influencer Journey?",
+            "description": "Join thousands of successful influencers who trust HEXAGON LABS for their campaign partnerships.",
+            "button": "Join Now - It's Free"
+        }
+    }
+}

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import Button from '../ui/Button';
 import { cn } from '../../utils/cn';
+import LanguageSwitcher from '../ui/LanguageSwitcher';
 
 interface NavigationProps {
   minimal?: boolean;
@@ -56,7 +57,7 @@ const Navigation: React.FC<NavigationProps> = ({ minimal = false }) => {
                 Pricing
               </a>
             </nav>
-            
+            <LanguageSwitcher />
             <div className="flex items-center gap-3">
               <Button variant="outline" size="sm" href="/auth">
                 Login

@@ -12,8 +12,11 @@ import Navigation from '../components/layout/Navigation';
 import Footer from '../components/layout/Footer';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
+import { useTranslation } from 'react-i18next';
 
 const LandingPage: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-white">
       <Navigation />
@@ -33,33 +36,32 @@ const LandingPage: React.FC = () => {
             {/* Enhanced Hero Content */}
             <div className="space-y-8">
               <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight animate-fade-in-up">
-                Connect Influencers with{' '}
+                {t('LandingPage.hero.title')}{' '}
                 <span className="bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent relative">
-                  Perfect Campaigns
+                  {t('LandingPage.hero.titleHighlight')}
                   <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-pink-600/20 blur-xl -z-10 animate-pulse"></div>
                 </span>
               </h1>
               
               <p className="text-xl text-gray-600 leading-relaxed animate-fade-in-up delay-200">
-                Join thousands of influencers and brands creating authentic partnerships. 
-                Match with campaigns that align with your audience and values.
+                {t('LandingPage.description')}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-400">
                 <Button size="lg" href="/register" className="transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
-                  ✨ Get Started as Influencer
+                  ✨ {t('LandingPage.hero.getStarted')}
                 </Button>
                 <Button variant="secondary" size="lg" href="#how-it-works" className="transform hover:scale-105 transition-all duration-300">
-                  Learn More
+                  {t('LandingPage.hero.learnMore')}
                 </Button>
               </div>
               
               {/* Enhanced Hero Stats */}
               <div className="grid grid-cols-3 gap-6 pt-8 animate-fade-in-up delay-600">
                 {[
-                  { number: "10K+", label: "Active Influencers", gradient: "from-indigo-500 to-purple-500" },
-                  { number: "500+", label: "Brand Partners", gradient: "from-pink-500 to-rose-500" },
-                  { number: "95%", label: "Success Rate", gradient: "from-emerald-500 to-teal-500" }
+                  { number: "10K+", label: t('LandingPage.hero.stats.influencers'), gradient: "from-indigo-500 to-purple-500" },
+                  { number: "500+", label: t('LandingPage.hero.stats.brands'), gradient: "from-pink-500 to-rose-500" },
+                  { number: "95%", label: t('LandingPage.hero.stats.successRate'), gradient: "from-emerald-500 to-teal-500" }
                 ].map((stat, index) => (
                   <div key={index} className="text-center group cursor-pointer">
                     <div className={`text-3xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-sm`}>
@@ -136,9 +138,9 @@ const LandingPage: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-8 relative">
           <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose{' '}
+              {t('LandingPage.features.title')}{' '}
               <span className="bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">
-                Hexagon Lab?
+                {t('LandingPage.features.titleHighlight')}
               </span>
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-indigo-500 to-pink-500 mx-auto rounded-full"></div>
@@ -148,29 +150,29 @@ const LandingPage: React.FC = () => {
             {[
               { 
                 icon: Shield, 
-                title: "Verified Profiles", 
-                description: "All influencers are verified through Facebook and Instagram authentication to ensure authenticity.",
+                title: t('LandingPage.features.verifiedProfiles.title'), 
+                description: t('LandingPage.features.verifiedProfiles.description'),
                 gradient: "from-indigo-500 to-purple-500",
                 delay: "delay-100"
               },
               { 
                 icon: Target, 
-                title: "Smart Matching", 
-                description: "AI-powered algorithm matches influencers with campaigns based on audience demographics and engagement.",
+                title: t('LandingPage.features.smartMatching.title'), 
+                description: t('LandingPage.features.smartMatching.description'),
                 gradient: "from-pink-500 to-rose-500",
                 delay: "delay-200"
               },
               { 
                 icon: BarChart3, 
-                title: "Real-time Analytics", 
-                description: "Track campaign performance with detailed analytics and reporting tools for better ROI insights.",
+                title: t('LandingPage.features.analytics.title'), 
+                description: t('LandingPage.features.analytics.description'),
                 gradient: "from-emerald-500 to-teal-500",
                 delay: "delay-300"
               },
               { 
                 icon: Handshake, 
-                title: "Secure Payments", 
-                description: "Protected payment system ensures timely and secure transactions for all campaign collaborations.",
+                title: t('LandingPage.features.payments.title'), 
+                description: t('LandingPage.features.payments.description'),
                 gradient: "from-amber-500 to-orange-500",
                 delay: "delay-400"
               }
@@ -196,9 +198,9 @@ const LandingPage: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-8 relative">
           <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              How It{' '}
+              {t('LandingPage.howItWorks.title')}{' '}
               <span className="bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent">
-                Works
+                {t('LandingPage.howItWorks.titleHighlight')}
               </span>
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-indigo-500 to-pink-500 mx-auto rounded-full"></div>
@@ -208,22 +210,22 @@ const LandingPage: React.FC = () => {
             {[
               {
                 number: "1",
-                title: "Create Your Profile",
-                description: "Sign up and verify your social media accounts through Facebook or Instagram authentication.",
+                title: t('LandingPage.howItWorks.steps.createProfile.title'),
+                description: t('LandingPage.howItWorks.steps.createProfile.description'),
                 gradient: "from-indigo-500 to-pink-500",
                 delay: "delay-100"
               },
               {
                 number: "2", 
-                title: "Get Matched",
-                description: "Our AI algorithm finds campaigns that perfectly match your audience and content style.",
+                title: t('LandingPage.howItWorks.steps.getMatched.title'),
+                description: t('LandingPage.howItWorks.steps.getMatched.description'),
                 gradient: "from-pink-500 to-rose-500",
                 delay: "delay-200"
               },
               {
                 number: "3",
-                title: "Collaborate & Earn", 
-                description: "Work with brands, create amazing content, and get paid securely through our platform.",
+                title: t('LandingPage.howItWorks.steps.collaborate.title'), 
+                description: t('LandingPage.howItWorks.steps.collaborate.description'),
                 gradient: "from-emerald-500 to-teal-500",
                 delay: "delay-300"
               }
@@ -252,10 +254,10 @@ const LandingPage: React.FC = () => {
         
         <div className="max-w-4xl mx-auto px-4 sm:px-8 text-center relative">
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 animate-fade-in-up">
-            Ready to Start Your Influencer Journey?
+            {t('LandingPage.cta.title')}
           </h2>
           <p className="text-xl text-indigo-100 mb-8 animate-fade-in-up delay-200">
-            Join thousands of successful influencers who trust <strong>HEXAGON</strong> LABS for their campaign partnerships.
+            {t('LandingPage.cta.description')}
           </p>
           <div className="animate-fade-in-up delay-400">
             <Button 
@@ -264,7 +266,7 @@ const LandingPage: React.FC = () => {
               href="/register"
               className="bg-white text-indigo-600 hover:bg-gray-50 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl"
             >
-              🚀 Join Now - It's Free
+              🚀 {t('LandingPage.cta.button')}
             </Button>
           </div>
         </div>
