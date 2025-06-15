@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react';
 import Button from '../ui/Button';
 import { cn } from '../../utils/cn';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 interface NavigationProps {
   minimal?: boolean;
@@ -11,6 +12,7 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ minimal = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { t } = useTranslation();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -42,28 +44,28 @@ const Navigation: React.FC<NavigationProps> = ({ minimal = false }) => {
                 href="/#features" 
                 className="text-gray-600 hover:text-indigo-600 font-medium transition-colors"
               >
-                Features
+                {t('Navigation.features')}
               </a>
               <a 
                 href="/#how-it-works" 
                 className="text-gray-600 hover:text-indigo-600 font-medium transition-colors"
               >
-                How It Works
+                {t('Navigation.howItWorks')}
               </a>
               <a 
                 href="/#pricing" 
                 className="text-gray-600 hover:text-indigo-600 font-medium transition-colors"
               >
-                Pricing
+                {t('Navigation.pricing')}
               </a>
             </nav>
             <LanguageSwitcher />
             <div className="flex items-center gap-3">
               <Button variant="outline" size="sm" href="/auth">
-                Login
+                {t('Navigation.login')}
               </Button>
               <Button size="sm" href="/register">
-                Sign Up
+                {t('Navigation.signUp')}
               </Button>
             </div>
           </div>
@@ -90,28 +92,28 @@ const Navigation: React.FC<NavigationProps> = ({ minimal = false }) => {
                 className="text-gray-600 hover:text-indigo-600 font-medium py-2 transition-colors"
                 onClick={toggleMenu}
               >
-                Features
+                {t('Navigation.features')}
               </a>
               <a 
                 href="#how-it-works" 
                 className="text-gray-600 hover:text-indigo-600 font-medium py-2 transition-colors"
                 onClick={toggleMenu}
               >
-                How It Works
+                {t('Navigation.howItWorks')}
               </a>
               <a 
                 href="#pricing" 
                 className="text-gray-600 hover:text-indigo-600 font-medium py-2 transition-colors"
                 onClick={toggleMenu}
               >
-                Pricing
+                {t('Navigation.pricing')}
               </a>
               <div className="pt-4 border-t border-gray-200 space-y-2">
                 <Button variant="outline" size="sm" fullWidth href="/auth">
-                  Login
+                  {t('Navigation.login')}
                 </Button>
                 <Button size="sm" fullWidth href="/register">
-                  Sign Up
+                  {t('Navigation.signUp')}
                 </Button>
               </div>
             </div>

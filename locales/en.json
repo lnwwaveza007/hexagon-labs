@@ -56,5 +56,191 @@
             "description": "Join thousands of successful influencers who trust HEXAGON LABS for their campaign partnerships.",
             "button": "Join Now - It's Free"
         }
+    },
+    "Navigation": {
+        "features": "Features",
+        "howItWorks": "How It Works",
+        "pricing": "Pricing",
+        "login": "Login",
+        "signUp": "Sign Up"
+    },
+    "LoginPage": {
+        "title": "Welcome Back",
+        "subtitle": "Sign in to your",
+        "brandName": "HEXAGON LABS",
+        "account": "account",
+        "continueWithFacebook": "Continue with Facebook",
+        "continueWithInstagram": "Continue with Instagram",
+        "or": "or",
+        "emailLabel": "Email Address",
+        "emailPlaceholder": "Enter your email",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "rememberMe": "Remember me",
+        "forgotPassword": "Forgot password?",
+        "signIn": "Sign In",
+        "signingIn": "Signing In...",
+        "noAccount": "Don't have an account?",
+        "signUpHere": "Sign up here",
+        "sideContent": {
+            "title": "Join the Influencer Revolution",
+            "description": "Connect with top brands and grow your influence with campaigns that match your style and audience.",
+            "stats": {
+                "influencers": "Verified Influencers",
+                "paidToCreators": "Paid to Creators"
+            },
+            "features": {
+                "verifiedPartnerships": "Verified brand partnerships",
+                "securePayments": "Secure payment protection",
+                "realTimeAnalytics": "Real-time campaign analytics"
+            }
+        },
+        "loading": "Authenticating..."
+    },
+    "RegisterPage": {
+        "title": "Join HEXAGON LABS",
+        "subtitle": "Create your influencer account and start matching with campaigns",
+        "steps": {
+            "account": "Account",
+            "interests": "Interests",
+            "rateCard": "Rate Card",
+            "review": "Review",
+            "complete": "Complete"
+        },
+        "accountInfo": {
+            "title": "Create Your Account",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email",
+            "role": "Role",
+            "influencer": "Influencer",
+            "influencerSubtitle": "Content Creator",
+            "comingSoon": "Coming Soon . . .",
+            "password": "Password",
+            "passwordStrength": "Password Strength",
+            "confirmPassword": "Confirm Password"
+        },
+        "interests": {
+            "title": "Tell Us About Your Interests",
+            "subtitle": "Help brands find you by sharing what products you love to review.",
+            "label": "What products are you interested in reviewing?",
+            "addCustom": "Add your own interest...",
+            "addButton": "Add"
+        },
+        "rateCard": {
+            "title": "Set Your Rate Card",
+            "subtitle": "Define your pricing for different types of content. This helps brands understand your rates.",
+            "quickGuide": {
+                "title": "💡 Quick Guide",
+                "tips": [
+                    "Add different rates for each content type you offer",
+                    "Include any special requirements or conditions",
+                    "You can add multiple rate cards for different platforms",
+                    "You can always update your rates later"
+                ]
+            },
+            "platform": "Platform",
+            "contentType": "Content Type",
+            "basePrice": "Base Price (THB)",
+            "duration": "Duration (minutes)",
+            "additionalNotes": "Additional Notes",
+            "advancedSettings": "Advanced Settings",
+            "workConditions": {
+                "title": "Work & Revision Conditions",
+                "scriptRevisions": "Script Revisions Allowed",
+                "draftRevisions": "Draft Revisions Allowed",
+                "reshootPenalty": "Reshoot Penalty",
+                "hashtagLimit": "Hashtag Limit",
+                "otherWorkConditions": "Other Work Conditions"
+            },
+            "paymentTerms": {
+                "title": "Payment Terms",
+                "quotationNeeded": "Quotation/PO Needed",
+                "depositRequired": "Deposit Required",
+                "depositPercentage": "Deposit Percentage",
+                "paymentAfterPost": "Payment After Post",
+                "paymentAfterPostPercentage": "Payment After Post Percentage",
+                "creditTerm": "Credit Term (days)",
+                "vatIncluded": "VAT Included",
+                "whtIncluded": "WHT Included",
+                "latePaymentPenalty": "Late Payment Penalty",
+                "otherPaymentTerms": "Other Payment Terms"
+            },
+            "addAnother": "Add Another Rate Card",
+            "pricingTips": {
+                "title": "💡 Pricing Tips",
+                "tips": [
+                    "Consider your follower count and engagement rate",
+                    "Factor in production time and costs",
+                    "Research market rates for similar content",
+                    "Include any special skills or equipment needed",
+                    "Mention if you provide additional services (e.g., script writing, editing)"
+                ]
+            }
+        },
+        "review": {
+            "title": "Review Your Information",
+            "subtitle": "Please review all your information before submitting. You can go back to make changes if needed.",
+            "accountInfo": {
+                "title": "Account Information",
+                "fullName": "Full Name",
+                "email": "Email",
+                "userType": "User Type"
+            },
+            "interests": {
+                "title": "Selected Interests"
+            },
+            "rateCards": {
+                "title": "Rate Cards",
+                "platform": "Platform",
+                "contentType": "Content Type",
+                "basePrice": "Base Price",
+                "duration": "Duration",
+                "additionalNotes": "Additional Notes",
+                "workConditions": {
+                    "title": "Work & Revision Conditions",
+                    "scriptRevisions": "Script Revisions",
+                    "draftRevisions": "Draft Revisions",
+                    "reshootPenalty": "Reshoot Penalty",
+                    "hashtagLimit": "Hashtag Limit",
+                    "otherWorkConditions": "Other Work Conditions"
+                },
+                "paymentTerms": {
+                    "title": "Payment Terms",
+                    "quotationNeeded": "Quotation/PO Needed",
+                    "depositRequired": "Deposit Required",
+                    "depositPercentage": "Deposit Percentage",
+                    "paymentAfterPost": "Payment After Post",
+                    "paymentAfterPostPercentage": "Payment After Post Percentage",
+                    "creditTerm": "Credit Term",
+                    "vatIncluded": "VAT Included",
+                    "whtIncluded": "WHT Included",
+                    "latePaymentPenalty": "Late Payment Penalty",
+                    "otherPaymentTerms": "Other Payment Terms"
+                }
+            }
+        },
+        "complete": {
+            "title": "Registration Complete!",
+            "subtitle": "Thank you for registering. We will review your information and get back to you soon.",
+            "goToLogin": "Go to Login"
+        },
+        "navigation": {
+            "back": "Back",
+            "next": "Next Step →",
+            "review": "Review Information",
+            "alreadyHaveAccount": "Already have an account?",
+            "signIn": "Sign in here"
+        },
+        "validation": {
+            "required": "is required",
+            "validEmail": "Please enter a valid email address",
+            "passwordLength": "Password must be at least 8 characters long",
+            "selectRole": "Please select your role",
+            "selectInterest": "Please select at least one interest or add a custom one",
+            "selectContentType": "Please select a content type",
+            "selectPlatform": "Please select a platform",
+            "validBasePrice": "Please enter a valid base price"
+        }
     }
 }
